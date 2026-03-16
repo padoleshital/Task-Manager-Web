@@ -1,8 +1,4 @@
-import { useState } from "react";
-
 export default function Navbar() {
-  const [search, setSearch] = useState("");
-
   return (
     <header
       style={{
@@ -11,52 +7,12 @@ export default function Navbar() {
         borderBottom: "1px solid #e5e7eb",
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: "flex-end",
         padding: "0 24px",
         gap: 16,
         flexShrink: 0,
       }}
     >
-      {/* ── Search bar ───────────────────────────────────────────── */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          backgroundColor: "#f9fafb",
-          border: "1px solid #e5e7eb",
-          borderRadius: 8,
-          padding: "8px 12px",
-          width: 280,
-        }}
-      >
-        {/* Search icon */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={2}
-          stroke="#9ca3af"
-          style={{ width: 16, height: 16, flexShrink: 0 }}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" />
-        </svg>
-        <input
-          type="text"
-          placeholder="Search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{
-            background: "transparent",
-            border: "none",
-            outline: "none",
-            fontSize: 14,
-            color: "#374151",
-            width: "100%",
-          }}
-        />
-      </div>
-
       {/* ── Right side: Bell + User ───────────────────────────────── */}
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         {/* Bell */}
@@ -113,7 +69,7 @@ export default function Navbar() {
             }}
           />
           <span style={{ fontSize: 14, fontWeight: 500, color: "#111827" }}>
-            Tom Cook
+            Shital Padole
           </span>
           {/* Chevron */}
           <svg
