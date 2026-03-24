@@ -3,86 +3,48 @@ import Navbar from "./Navbar";
 import PageHeader from "../common/PageHeader";
 import { getPageConfig } from "../../utils/getPageConfig";
 import { Outlet, useLocation } from "react-router-dom";
+import { usePageAction } from "../../context/PageActionContext";
 
 export default function Layout() {
   const location = useLocation();
   const { title, actionLabel } = getPageConfig(location.pathname);
+  const { action } = usePageAction();
 
   return (
-    <div
-      style={{
-        display: "flex",
-        height: "100vh",
-        width: "100vw",
-        overflow: "hidden",
-        backgroundColor: "#f9fafb",
-      }}
-    >
+    <div className="flex h-screen w-screen overflow-hidden bg-gray-50">
       {/* Fixed Sidebar */}
       <Sidebar />
 
       {/* Right panel: Navbar on top, scrollable content below */}
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-          minWidth: 0,
-        }}
-      >
+      <div className="flex flex-1 flex-col overflow-hidden min-w-0">
         <Navbar />
 
-        {/* Page Header Area */}
-        <div style={{
-          padding: "16px 24px 0 24px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "12px"
-        }}>
-          <PageHeader title={title} />
+        {/* Page Header Area - Only show if there is a title or action */}
+        {(title || actionLabel) && (
+          <div className="px-6 py-4 flex items-center justify-between gap-3">
+            <PageHeader title={title} />
 
-          {/* Dynamic Page Action Button */}
-          {actionLabel && (
-            <button style={{
-              backgroundColor: '#ffffff',
-              border: '1px solid #e5e7eb',
-              borderRadius: '12px',
-              padding: '10px 20px',
-              fontSize: '14px',
-              fontWeight: 600,
-              color: '#4f46e5',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              cursor: 'pointer',
-              boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-              transition: 'background-color 0.2s'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#ffffff'}
-            >
-              {actionLabel} <span style={{ fontSize: '18px' }}>+</span>
-            </button>
-          )}
-        </div>
+            {/* Dynamic Page Action Button - Linked to Global PageActionContext */}
+            {actionLabel && (
+              <button 
+                onClick={() => action && action()}
+                className={`
+                  flex items-center gap-2 px-5 py-2 text-sm font-semibold rounded-xl border
+                  shadow-sm transition-all duration-200
+                  ${action 
+                    ? "bg-white text-indigo-600 border-gray-200 hover:bg-gray-50 cursor-pointer" 
+                    : "bg-gray-100 text-gray-400 border-gray-100 cursor-not-allowed opacity-60"
+                  }
+                `}
+              >
+                {actionLabel} <span className="text-lg">+</span>
+              </button>
+            )}
+          </div>
+        )}
 
-        <main
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: 24,
-          }}
-        >
-          <div style={{
-            minHeight: "100%",
-            backgroundColor: "#ffffff",
-            borderRadius: "12px",
-            border: "1px solid #e5e7eb",
-            padding: "24px",
-            boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
-          }}>
+        <main className="flex-1 overflow-y-auto p-6">
+          <div className="min-h-full bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
             <Outlet />
           </div>
         </main>
